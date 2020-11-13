@@ -32,7 +32,7 @@ function validateUser(user) {
   return schema.validate(user);
 }
 
-//creating a new api endpoint to access the current user
+//creating a new api endpoint "me" to access the current user
 router.get(
   "/me",
   auth,

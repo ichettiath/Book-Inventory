@@ -17,6 +17,7 @@ function validate(req) {
 
 router.post(
   "/",
+  //asyncMiddleware wraps the function in a try catch block
   asyncMiddleware(async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
@@ -32,7 +33,7 @@ router.post(
     if (!correctPassword)
       return res.status(400).send("Invalid email or password");
 
-    //sends the user's webtoken
+    //sends the user's webtoken as the response
     const token = user.generateAuthToken();
     res.send(token);
   })

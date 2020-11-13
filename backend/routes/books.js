@@ -7,7 +7,8 @@ const router = express.Router();
 const { genreSchema, Genre } = require("./genres");
 mongoose.set("useFindAndModify", false);
 
-//defines the properties of a book
+//basically creates a class Book
+//defines all the properties included in a book and puts it into a mongoose model
 const Book = mongoose.model(
   "Books",
   new mongoose.Schema({
@@ -24,7 +25,7 @@ function validateBook(book) {
   const schema = Joi.object({
     title: Joi.string().min(0).required(),
 
-    //objectId is defined above and ensures a proper ID is passed
+    //objectId is defined in the import section at the top and ensures a proper ID is passed
     genreId: Joi.objectId().required(),
     rating: Joi.number().min(0).required(),
     pages: Joi.number().min(0).required(),
@@ -37,12 +38,14 @@ function validateBook(book) {
 router.get(
   "/",
   asyncMiddleware(async (req, res) => {
+    //passing no arguments into find() returns every item in the list
     const books = await Book.find();
     res.send(books);
   })
 );
 
 //auth is passed in here because it is a middleware function that precedes this one
+//auth checks the header of this request that should contain a valid user token
 router.post(
   "/",
   auth,
@@ -70,7 +73,6 @@ router.post(
   })
 );
 
-//auth is passed in here because it is a middleware functiont that precedes this one
 router.put(
   "/:id",
   auth,
@@ -116,7 +118,6 @@ router.delete(
 
     book.numberInStock--;
     if (book.numberInStock === 0) await Book.findByIdAndRemove(req.params.id);
-    else book.save();
 
     res.send(book);
   })

@@ -16,13 +16,14 @@ function auth(req, res, next) {
   }
 }
 
-//takes any function a wraps it in a try catch block and passes control to index.js for error handling
+//takes any function a wraps it in a try catch block
 function asyncMiddleware(handler) {
   return async (req, res, next) => {
     try {
       await handler(req, res);
     } catch (ex) {
       next(ex);
+      //next passes the exception to app.use() in index.js
     }
   };
 }

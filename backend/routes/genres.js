@@ -23,7 +23,8 @@ router.get(
   })
 );
 
-//auth is passed in here because it is a middleware functiont that precedes this one
+//auth is passed in here because it is a middleware function that precedes this one
+//auth checks the header of this request that should contain a valid user token
 router.post(
   "/",
   auth,
@@ -38,7 +39,6 @@ router.post(
   })
 );
 
-//auth is passed in here because it is a middleware functiont that precedes this one
 router.put(
   "/:id",
   auth,
@@ -60,7 +60,6 @@ router.put(
   })
 );
 
-//auth is passed in here because it is a middleware functiont that precedes this one
 router.delete(
   "/:id",
   auth,

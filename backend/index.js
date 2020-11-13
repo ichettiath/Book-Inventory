@@ -7,9 +7,14 @@ const config = require("config");
 const app = express();
 const mongoose = require("mongoose");
 
-//any unexpected error will be caught here
+//any unexpected error that is not caught by express will be caught here
 process.on("uncaughtException", (ex) => {
   console.error("Uncaught Exception.");
+});
+
+//handles any promises that are rejected and are uncaught
+process.on("unhandledRejection", (ex) => {
+  console.error("Unhandeled Rejection.");
 });
 
 if (!config.get("jwtPrivateKey")) {
@@ -17,6 +22,7 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
+//connects to the mongoDB database
 mongoose
   .connect("mongodb://localhost/Book_Inventory", {
     useNewUrlParser: true,
